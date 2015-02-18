@@ -1,0 +1,89 @@
+{
+    "name":"nsg-module-google",
+    "slug":"nsg-module-google",
+    "version":"1.0.0",
+    "author":"Jeremy R DeYoung",
+    "shortDescription":"Coldbox Module to allow Social Login via Google",
+    "location":"",
+    "directory":"",
+    "createPackageDirectory":true,
+    "packageDirectory":"",
+    "homepage":"https://github.com/NextStepGuru/nsg-module-google",
+    "documentation":"https://github.com/NextStepGuru/nsg-module-google",
+    "repository":{
+        "type":"github",
+        "url":"https://github.com/NextStepGuru/nsg-module-google"
+    },
+    "bugs":"",
+    "description":"",
+    "instructions":"README.md",
+    "changelog":"CHANGELOG.md",
+    "type":"",
+    "keywords":[
+
+    ],
+    "private":false,
+    "engines":[
+        {
+            "type":"railo",
+            "version":">=4.1.x"
+        },
+        {
+            "type":"adobe",
+            "version":">=10.0.0"
+        }
+    ],
+    "defaultEngine":"",
+    "defaultPort":0,
+    "projectURL":"https://github.com/NextStepGuru/nsg-module-google",
+    "license":[
+        {
+            "type":"",
+            "url":""
+        }
+    ],
+    "contributors":[
+
+    ],
+    "dependencies":{
+        "nsg-module-oauth":"1.0.0",
+        "nsg-module-security":"1.0.2"
+    },
+    "devDependencies":{
+
+    },
+    "installPaths":{
+    },
+    "ignore":[
+
+    ],
+    "testbox":{
+        "runner":[
+            {
+                "default":""
+            }
+        ],
+        "labels":[
+
+        ],
+        "reporter":"",
+        "reporterResults":"",
+        "bundles":[
+            ""
+        ],
+        "directory":{
+            "mapping":"",
+            "recurse":true
+        },
+        "watchers":[
+
+        ],
+        "notify":{
+            "emails":[
+
+            ],
+            "growl":"",
+            "url":""
+        }
+    }
+}
