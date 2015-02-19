@@ -29,10 +29,9 @@ component {
 		// module settings - stored in modules.name.settings
 		settings = {
 			oauth = {
-				oauthVersion 		= 1,
-				tokenRequestURL 	= "https://api.google.com/oauth/request_token",
-				authorizeRequestURL = "https://api.google.com/oauth/authorize",
-				accessRequestURL 	= "https://api.google.com/oauth/access_token"
+				oauthVersion 		= 2,
+				authorizeRequestURL = "https://accounts.google.com/o/oauth2/auth",
+				tokenRequestURL 	= "https://accounts.google.com/o/oauth2/token"
 			}
 		};
 
@@ -59,6 +58,7 @@ component {
 
 		// Custom Declared Interceptors
 		interceptors = [
+			{class="#moduleMapping#.interceptors.googleInterceptor"}
 		];
 
 		// Binder Mappings
@@ -71,11 +71,11 @@ component {
 	*/
 	function onLoad(){
 		var nsgSocialLogin = controller.getSetting('nsgSocialLogin',false,arrayNew());
-			arrayAppend(nsgSocialLogin,{"name":"google","icon":"google","title":"Google+"});
+			arrayAppend(nsgSocialLogin,{"name":"google","icon":"google-plus","title":"Google+"});
 			controller.setSetting('nsgSocialLogin',nsgSocialLogin);
 		var nsgMenu = controller.getSetting('nsgMenu',false,[]);
 		// menu::login
-		arrayAppend(nsgMenu,{ "menu"="topRight","subid":"login","icon"="fa fa-google","id":"logingoogle","title":"Sign-in with Google+","link":"/security/login/google","roles":"","type":"link","isUserLoggedIn":false });
+		arrayAppend(nsgMenu,{ "menu"="topRight","subid":"login","icon"="fa fa-google-plus","id":"logingoogle","title":"Sign-in with Google+","link":"/security/login/google","roles":"","type":"link","isUserLoggedIn":false });
 	}
 
 	/**

@@ -3,10 +3,24 @@ Coldbox Module to allow Social Login via Google
 
 Setup & Installation
 ---------------------
+In order to use Google OAuth, you must register for a Google Client Credientials. Visit https://console.developers.google.com/project and signup for the free account. Make sure to use to create an OAuth2 account. Server API keys & none oauth keys are not supported.
 
 ####Add the following structure to Coldbox.cfc
 	google = {
 		oauth = {
+			redirectURL			= "{{what_is_the_internal_url}}",
+			loginSuccess		= "login.success",
+			loginFailure		= "login.failure",
+			clientID			= "{{Google_Provided_ClientID}}",
+			clientSecret		= "{{Google_Provided_ClientSecret}}",
+			scope 				= "https://www.googleapis.com/auth/userinfo.email",
+			accessType 			= "offline",
+			approvalPrompt		= "auto",
+			responseType		= "code"
+		},
+		analytics = {
+			enabled 			= true,
+			uaID 				= "{{Google_Analytics_uaID}}"
 		}
 	}
 
