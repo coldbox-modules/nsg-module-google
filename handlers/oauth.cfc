@@ -19,7 +19,14 @@ component {
 			var data = deserializeJSON(httpService.send().getPrefix()['fileContent']);
 			structAppend(results,data);
 
+			structKeyRename(results,'id','referenceID');
+			structKeyRename(results,'given_name','first');
+			structKeyRename(results,'family_name','last');
+
+			results['socialservice'] = 'google';
+
 			announceInterception( state='googleLoginSuccess', interceptData=results );
+			announceInterception( state='loginSuccess', interceptData=results );
 			setNextEvent(view=prc.googleCredentials['loginSuccess'],ssl=( cgi.server_port == 443 ? true : false ));
 
 		}else if( event.valueExists('code') ){
@@ -45,6 +52,7 @@ component {
 				setNextEvent('google/oauth/activateUser')
 			}else{
 				announceInterception( state='googleLoginFailure', interceptData=results );
+				announceInterception( state='loginFailure', interceptData=results );
 				throw('Unknown google OAuth.v2 Error','google.oauth');
 			}
 
@@ -52,5 +60,12 @@ component {
 
 			location(url="#prc.googleSettings['authorizeRequestURL']#?client_id=#prc.googleCredentials['clientID']#&redirect_uri=#urlEncodedFormat(prc.googleCredentials['redirectURL'])#&scope=#prc.googleCredentials['scope']#&response_type=#prc.googleCredentials['responseType']#&approval_prompt=#prc.googleCredentials['approvalPrompt']#&access_type=#prc.googleCredentials['accessType']#",addtoken=false);
 		}
+	}
+
+	function structKeyRename(mStruct,mTarget,mKey){
+		arguments.mStruct[mKey] = arguments.mStruct[mTarget];
+		structDelete(arguments.mStruct,mTarget);
+
+		return arguments.mStruct;
 	}
 }

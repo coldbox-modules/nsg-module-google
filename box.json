@@ -1,7 +1,7 @@
 {
     "name":"nsg-module-google",
     "slug":"nsg-module-google",
-    "version":"1.0.0",
+    "version":"1.0.5",
     "author":"Jeremy R DeYoung",
     "shortDescription":"Coldbox Module to allow Social Login via Google",
     "location":"",
