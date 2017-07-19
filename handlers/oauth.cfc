@@ -1,21 +1,21 @@
 component {
 
+	property name="sessionStorage" 	inject="sessionStorage@cbstorages";
+	
 	function preHandler(event,rc,prc){
 		prc.googleCredentials = getSetting('google')['oauth'];
 		prc.googleSettings = getModuleSettings('nsg-module-google')['oauth'];
-		if(!structKeyExists(session,'googleOAuth')){
-			session['googleOAuth'] = structNew();
+		if( !sessionStorage.exists( 'googleOAuth' ) ){
+			sessionStorage.setVar( 'googleOAuth', structNew() );
 		}
 	}
 
 	function index(event,rc,prc){
-
 		if( event.getValue('id','') == 'activateUser' ){
-			var results = duplicate(session['googleOAuth']);
-
+			var results = duplicate( sessionStorage.getVar( 'googleOAuth' ) );
 			var httpService = new http();
 				httpService.setURL('https://www.googleapis.com/oauth2/v1/userinfo');
-				httpService.addParam(type="url", name='access_token', value=session['googleOAuth']['access_token']);
+				httpService.addParam(type="url", name='access_token', value=results['access_token']);
 			var data = deserializeJSON(httpService.send().getPrefix()['fileContent']);
 			structAppend(results,data);
 
@@ -30,12 +30,12 @@ component {
 			setNextEvent(view=prc.googleCredentials['loginSuccess'],ssl=( cgi.server_port == 443 ? true : false ));
 
 		}else if( event.valueExists('code') ){
-			session['googleOAuth']['code'] = event.getValue('code');
+			results['code'] = event.getValue('code');
 
 			var httpService = new http();
 				httpService.setMethod('post');
 				httpService.setURL(prc.googleSettings['tokenRequestURL']);
-				httpService.addParam(type="formfield",name='code', value=session['googleOAuth']['code']);
+				httpService.addParam(type="formfield",name='code', value=results['code']);
 				httpService.addParam(type="formfield",name='client_id', value=prc.googleCredentials['clientID']);
 				httpService.addParam(type="formfield",name='client_secret', value=prc.googleCredentials['clientSecret']);
 				httpService.addParam(type="formfield",name='redirect_uri', value=prc.googleCredentials['redirectURL']);
@@ -46,10 +46,10 @@ component {
 				var json = deserializeJSON(results['fileContent']);
 
 				for(var key IN json){
-					session['googleOAuth'][key] = json[key];
+					results[key] = json[key];
 				}
-
-				setNextEvent('google/oauth/activateUser')
+				sessionStorage.setVar( 'googleOAuth', results );
+				setNextEvent('google/oauth/activateUser');
 			}else{
 				announceInterception( state='googleLoginFailure', interceptData=results );
 				announceInterception( state='loginFailure', interceptData=results );
