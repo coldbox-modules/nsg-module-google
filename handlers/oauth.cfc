@@ -1,18 +1,18 @@
 component {
 
-	property name="sessionStorage" 	inject="sessionStorage@cbstorages";
+	property name="cacheStorage" 	inject="cacheStorage@cbstorages";
 	
 	function preHandler(event,rc,prc){
 		prc.googleCredentials = getSetting('google')['oauth'];
 		prc.googleSettings = getModuleSettings('nsg-module-google')['oauth'];
-		if( !sessionStorage.exists( 'googleOAuth' ) ){
-			sessionStorage.setVar( 'googleOAuth', structNew() );
+		if( !cacheStorage.exists( 'googleOAuth' ) ){
+			cacheStorage.setVar( 'googleOAuth', structNew() );
 		}
 	}
 
 	function index(event,rc,prc){
 		if( event.getValue('id','') == 'activateUser' ){
-			var results = duplicate( sessionStorage.getVar( 'googleOAuth' ) );
+			var results = duplicate( cacheStorage.getVar( 'googleOAuth' ) );
 			var httpService = new http();
 				httpService.setURL('https://www.googleapis.com/oauth2/v1/userinfo');
 				httpService.addParam(type="url", name='access_token', value=results['access_token']);
@@ -48,7 +48,7 @@ component {
 				for(var key IN json){
 					results[key] = json[key];
 				}
-				sessionStorage.setVar( 'googleOAuth', results );
+				cacheStorage.setVar( 'googleOAuth', results );
 				setNextEvent('google/oauth/activateUser');
 			}else{
 				announceInterception( state='googleLoginFailure', interceptData=results );
