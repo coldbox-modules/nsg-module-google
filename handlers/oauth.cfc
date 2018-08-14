@@ -3,7 +3,7 @@ component {
 	property name="cacheStorage" 	inject="cacheStorage@cbstorages";
 	
 	function preHandler(event,rc,prc){
-		prc.googleCredentials = getSetting('google')['oauth'];
+		prc.googleCredentials = getModuleSettings('nsg-module-google').OAuth;
 		prc.googleSettings = getModuleSettings('nsg-module-google')['oauth'];
 		if( !cacheStorage.exists( 'googleOAuth' ) ){
 			cacheStorage.setVar( 'googleOAuth', structNew() );
