@@ -3,7 +3,6 @@ component {
 	property name="cacheStorage" 	inject="cacheStorage@cbstorages";
 	
 	function preHandler(event,rc,prc){
-		prc.googleCredentials = getSetting('google')['oauth'];
 		prc.googleSettings = getModuleSettings('nsg-module-google')['oauth'];
 		if( !cacheStorage.exists( 'googleOAuth' ) ){
 			cacheStorage.setVar( 'googleOAuth', structNew() );
@@ -27,7 +26,7 @@ component {
 
 			announceInterception( state='googleLoginSuccess', interceptData=results );
 			announceInterception( state='loginSuccess', interceptData=results );
-			setNextEvent(view=prc.googleCredentials['loginSuccess'],ssl=( cgi.server_port == 443 ? true : false ));
+			setNextEvent(view=prc.googleSettings['loginSuccess'],ssl=( cgi.server_port == 443 ? true : false ));
 
 		}else if( event.valueExists('code') ){
 			results['code'] = event.getValue('code');
@@ -36,9 +35,9 @@ component {
 				httpService.setMethod('post');
 				httpService.setURL(prc.googleSettings['tokenRequestURL']);
 				httpService.addParam(type="formfield",name='code', value=results['code']);
-				httpService.addParam(type="formfield",name='client_id', value=prc.googleCredentials['clientID']);
-				httpService.addParam(type="formfield",name='client_secret', value=prc.googleCredentials['clientSecret']);
-				httpService.addParam(type="formfield",name='redirect_uri', value=prc.googleCredentials['redirectURL']);
+				httpService.addParam(type="formfield",name='client_id', value=prc.googleSettings['clientID']);
+				httpService.addParam(type="formfield",name='client_secret', value=prc.googleSettings['clientSecret']);
+				httpService.addParam(type="formfield",name='redirect_uri', value=prc.googleSettings['redirectURL']);
 				httpService.addParam(type="formfield",name='grant_type', value='authorization_code');
 			var results = httpService.send().getPrefix();
 
@@ -58,7 +57,7 @@ component {
 
 		}else{
 
-			location(url="#prc.googleSettings['authorizeRequestURL']#?client_id=#prc.googleCredentials['clientID']#&redirect_uri=#urlEncodedFormat(prc.googleCredentials['redirectURL'])#&scope=#prc.googleCredentials['scope']#&response_type=#prc.googleCredentials['responseType']#&approval_prompt=#prc.googleCredentials['approvalPrompt']#&access_type=#prc.googleCredentials['accessType']#",addtoken=false);
+			location(url="#prc.googleSettings['authorizeRequestURL']#?client_id=#prc.googleSettings['clientID']#&redirect_uri=#urlEncodedFormat(prc.googleSettings['redirectURL'])#&scope=#prc.googleSettings['scope']#&response_type=#prc.googleSettings['responseType']#&approval_prompt=#prc.googleSettings['approvalPrompt']#&access_type=#prc.googleSettings['accessType']#",addtoken=false);
 		}
 	}
 
