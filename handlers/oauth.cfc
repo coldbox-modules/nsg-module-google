@@ -19,8 +19,16 @@ component {
 			structAppend(results,data);
 
 			structKeyRename(results,'id','referenceID');
-			structKeyRename(results,'given_name','first');
-			structKeyRename(results,'family_name','last');
+			if( structKeyExists( results, "given_name" ) ){
+				structKeyRename(results,'given_name','first');
+			} else {
+				results[ "first" ] = "";
+			}
+			if( structKeyExists( results, "family_name" ) ){
+				structKeyRename(results,'family_name','last');
+			} else {
+				results[ "last" ] = "";
+			}
 
 			results['socialservice'] = 'google';
 
